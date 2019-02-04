@@ -1,7 +1,6 @@
 package com.recruiter.recruiterapi;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +23,8 @@ public class CandidateController {
                     String candidateLastName = row.getString("lastname");
                     String candidatePersonalId = row.getString("personalid");
                     String candidateEmail = row.getString("email");
-                    String candidateAdress = row.getString("adress");
                     int candidatePhone = row.getInt("phone");
+                    String candidateAddress = row.getString("address");
 
                     Candidate candidate = new Candidate();
                     candidate.setId(id);
@@ -33,11 +32,14 @@ public class CandidateController {
                     candidate.setLastname(candidateLastName);
                     candidate.setPersonalid(candidatePersonalId);
                     candidate.setEmail(candidateEmail);
-                    candidate.setAdress(candidateAdress);
                     candidate.setPhone(candidatePhone);
+                    candidate.setAddress(candidateAddress);
 
                     List<Language> candidateLanguages = this.getLanguages(candidate.getId());
                     candidate.setLanguages(candidateLanguages);
+
+                    List<Job> candidateJobs = this.getJob(candidate.getId());
+                    candidate.setJobs(candidateJobs);
 
                     return candidate;
                 }
@@ -52,6 +54,7 @@ public class CandidateController {
                     String candidateLanguageLevel = row.getString("language_level");
 
                     Language language = new Language();
+                    language.setCandidateId(candidateId);
                     language.setLanguageName(candidateLanguageName);
                     language.setLanguageLevel(candidateLanguageLevel);
 
@@ -62,14 +65,28 @@ public class CandidateController {
 
     }
 
-    @PostMapping("/candidate")
-    public void addCandidate(@RequestBody Candidate candidate) {
-        jdbcTemplate.update("insert into candidate(firstname, lastname, personalid, email, adress, phone) values(?, ?, ?, ?, ?, ?)",
-                candidate.getFirstname(), candidate.getLastname(), candidate.getPersonalid(),
-                candidate.getEmail(), candidate.getAdress(), candidate.getPhone());
+    private List<Job> getJob(int candidateId) {
+        List<Job> jobs = jdbcTemplate.query("select * from job_title where candidate_id = ?", new Object[]{candidateId}, (row, count) -> {
+                    String candidateJobName = row.getString("job_name");
+
+                    Job job = new Job();
+                    job.setCandidateId(candidateId);
+                    job.setJobName(candidateJobName);
+
+                    return job;
+                }
+        );
+        return jobs;
+
     }
 
-    @PostMapping("/language")
+    @PostMapping("/candidate")
+    public void addCandidate(@RequestBody Candidate candidate) {
+        jdbcTemplate.update("insert into candidate(firstname, lastname, personalid, email, phone, address) values(?, ?, ?, ?, ?, ?)",
+                candidate.getFirstname(), candidate.getLastname(), candidate.getPersonalid(),
+                candidate.getEmail(), candidate.getPhone(), candidate.getAddress());
+    }
+
     public void addLanguage(@RequestBody Language language) {
         jdbcTemplate.update("insert into language(language_name, language_level, candidate_id) values(?, ?, ?)",
                 language.getLanguageName(), language.getLanguageLevel(), language.getCandidateId());

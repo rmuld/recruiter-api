@@ -9,9 +9,10 @@ public class Candidate {
     private String lastname;
     private String personalid;
     private String email;
-    private String adress;
     private int phone;
+    private String address;
     private List<Language> languages = new ArrayList<>();
+    private List<Job> jobs = new ArrayList<>();
 
     public int getId() { return id; }
     public void setId(int id) {
@@ -30,12 +31,16 @@ public class Candidate {
     public String getEmail() {return email;}
     public void setEmail(String email) {this.email = email;}
 
-    public String getAdress() {return adress;}
-    public void setAdress(String adress) {this.adress = adress;}
-
     public int getPhone() {return phone;}
     public void setPhone(int phone) {this.phone = phone;}
 
+    public String getAddress() {return address;}
+    public void setAddress(String address) {this.address = address;}
+
     public List<Language> getLanguages() { return languages; }
     public void setLanguages(List<Language> languages) {this.languages = languages;}
+
+    public List<Job> getJobs() { return jobs; }
+
+    public void setJobs(List<Job> jobs) { this.jobs = jobs; }
 }
