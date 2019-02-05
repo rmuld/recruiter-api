@@ -11,8 +11,10 @@ public class Candidate {
     private String email;
     private int phone;
     private String address;
+    private String job_title;
     private List<Language> languages = new ArrayList<>();
-    private List<Job> jobs = new ArrayList<>();
+    private List<Education> educations = new ArrayList<>();
+    private List<JobExperience> jobExperiences = new ArrayList<>();
 
     public int getId() { return id; }
     public void setId(int id) {
@@ -37,10 +39,15 @@ public class Candidate {
     public String getAddress() {return address;}
     public void setAddress(String address) {this.address = address;}
 
+    public String getJob_title() {return job_title;}
+    public void setJob_title(String job_title) {this.job_title = job_title;}
+
     public List<Language> getLanguages() { return languages; }
     public void setLanguages(List<Language> languages) {this.languages = languages;}
 
-    public List<Job> getJobs() { return jobs; }
+    public List<Education> getEducations() { return educations; }
+    public void setEducations(List<Education> educations) { this.educations = educations; }
 
-    public void setJobs(List<Job> jobs) { this.jobs = jobs; }
+    public List<JobExperience> getJobExperiences() { return jobExperiences; }
+    public void setJobExperiences(List<JobExperience> jobExperiences) { this.jobExperiences = jobExperiences; }
 }
