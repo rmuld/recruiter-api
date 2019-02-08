@@ -14,17 +14,17 @@ public class CandidateController {
 
     @GetMapping("/candidates")
     public List<Candidate> getCandidatesByJobTitle(@RequestParam String job_title) {
-        List<Candidate> candidates = jdbcTemplate.query("select id, firstname, lastname, personalid from candidate where job_title=?", new Object[]{job_title}, (row, count) -> {
+        List<Candidate> candidates = jdbcTemplate.query("select id, firstname, lastname, linkedin from candidate where job_title=?", new Object[]{job_title}, (row, count) -> {
                     int id = row.getInt("id");
                     String candidateFirstName = row.getString("firstname");
                     String candidateLastName = row.getString("lastname");
-                    String candidatePersonalId = row.getString("personalid");
+                    String candidateLinkedIn = row.getString("linkedin");
 
                     Candidate candidate = new Candidate();
                     candidate.setId(id);
                     candidate.setFirstname(candidateFirstName);
                     candidate.setLastname(candidateLastName);
-                    candidate.setPersonalid(candidatePersonalId);
+                    candidate.setLinkedin(candidateLinkedIn);
 
                     return candidate;
                 }
@@ -132,9 +132,9 @@ public class CandidateController {
 
     @PostMapping("/candidate")
     public void addCandidate(@RequestBody Candidate candidate) {
-        jdbcTemplate.update("insert into candidate(firstname, lastname, personalid, email, phone, address, job_title) values(?, ?, ?, ?, ?, ?, ?)",
+        jdbcTemplate.update("insert into candidate(firstname, lastname, personalid, email, phone, address, linkedin, picture, job_title) values(?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 candidate.getFirstname(), candidate.getLastname(), candidate.getPersonalid(),
-                candidate.getEmail(), candidate.getPhone(), candidate.getAddress(), candidate.getJob_title());
+                candidate.getEmail(), candidate.getPhone(), candidate.getAddress(), candidate.getLinkedin(), candidate.getPicture(), candidate.getJob_title());
         int id = jdbcTemplate.queryForObject("select max(id) from candidate", Integer.class);
 
         for(Language language : candidate.getLanguages()) {
