@@ -14,17 +14,20 @@ public class CandidateController {
 
     @GetMapping("/candidates")
     public List<Candidate> getCandidatesByJobTitle(@RequestParam String job_title) {
-        List<Candidate> candidates = jdbcTemplate.query("select id, firstname, lastname, linkedin from candidate where job_title=?", new Object[]{job_title}, (row, count) -> {
+        List<Candidate> candidates = jdbcTemplate.query("select id, firstname, lastname, linkedin, comment from candidate where job_title=?", new Object[]{job_title}, (row, count) -> {
                     int id = row.getInt("id");
                     String candidateFirstName = row.getString("firstname");
                     String candidateLastName = row.getString("lastname");
                     String candidateLinkedIn = row.getString("linkedin");
+                    String candidateComment = row.getString("comment");
+
 
                     Candidate candidate = new Candidate();
                     candidate.setId(id);
                     candidate.setFirstname(candidateFirstName);
                     candidate.setLastname(candidateLastName);
                     candidate.setLinkedin(candidateLinkedIn);
+                    candidate.setComment(candidateComment);
 
                     return candidate;
                 }
@@ -152,8 +155,10 @@ public class CandidateController {
         }
     }
 
-//    public void addLanguage(@RequestBody Language language) {
-//        jdbcTemplate.update("insert into language(language_name, language_level, candidate_id) values(?, ?, ?)",
-//                language.getLanguageName(), language.getLanguageLevel(), language.getCandidateId());
-//    }
+    @PostMapping("/comment")
+    public void addComment(@RequestBody Candidate candidate) {
+        jdbcTemplate.update("update candidate set comment=? where id=?",
+                candidate.getComment(), candidate.getId());
+
+    }
 }

@@ -12,8 +12,10 @@ public class Candidate {
     private int phone;
     private String address;
     private String linkedin;
+    private String comment;
     private String picture;
     private String job_title;
+
     private List<Language> languages = new ArrayList<>();
     private List<Education> educations = new ArrayList<>();
     private List<JobExperience> jobExperiences = new ArrayList<>();
@@ -43,6 +45,9 @@ public class Candidate {
 
     public String getLinkedin() { return linkedin; }
     public void setLinkedin(String linkedin) { this.linkedin = linkedin; }
+
+    public String getComment() { return comment; }
+    public void setComment(String comment) { this.comment = comment; }
 
     public String getPicture() { return picture; }
     public void setPicture(String picture) { this.picture = picture; }
