@@ -14,30 +14,8 @@ public class CandidateController {
 
     @GetMapping("/candidates")
     public List<Candidate> getCandidatesByJobTitle(@RequestParam String job_title) {
-        List<Candidate> candidates = jdbcTemplate.query("select id, firstname, lastname, linkedin, comment from candidate where job_title=?", new Object[]{job_title}, (row, count) -> {
-                    int id = row.getInt("id");
-                    String candidateFirstName = row.getString("firstname");
-                    String candidateLastName = row.getString("lastname");
-                    String candidateLinkedIn = row.getString("linkedin");
-                    String candidateComment = row.getString("comment");
+        List<Candidate> candidates = jdbcTemplate.query("select * from candidate where job_title=?", new Object[]{job_title}, (row, count) -> {
 
-
-                    Candidate candidate = new Candidate();
-                    candidate.setId(id);
-                    candidate.setFirstname(candidateFirstName);
-                    candidate.setLastname(candidateLastName);
-                    candidate.setLinkedin(candidateLinkedIn);
-                    candidate.setComment(candidateComment);
-
-                    return candidate;
-                }
-        );
-        return candidates;
-    }
-
-    /*@GetMapping("/candidates")
-    public List<Candidate> getCandidates() {
-        List<Candidate> candidates = jdbcTemplate.query("select * from candidate", (row, count) -> {
                     int id = row.getInt("id");
                     String candidateFirstName = row.getString("firstname");
                     String candidateLastName = row.getString("lastname");
@@ -45,6 +23,9 @@ public class CandidateController {
                     String candidateEmail = row.getString("email");
                     int candidatePhone = row.getInt("phone");
                     String candidateAddress = row.getString("address");
+                    String candidateLinkedIn = row.getString("linkedin");
+                    String candidateComment = row.getString("comment");
+                    String candidatePicture = row.getString("picture");
                     String candidateJob_title = row.getString("job_title");
 
                     Candidate candidate = new Candidate();
@@ -55,6 +36,9 @@ public class CandidateController {
                     candidate.setEmail(candidateEmail);
                     candidate.setPhone(candidatePhone);
                     candidate.setAddress(candidateAddress);
+                    candidate.setLinkedin(candidateLinkedIn);
+                    candidate.setComment(candidateComment);
+                    candidate.setPicture(candidatePicture);
                     candidate.setJob_title(candidateJob_title);
 
                     List<Language> candidateLanguages = this.getLanguages(candidate.getId());
@@ -69,9 +53,8 @@ public class CandidateController {
                     return candidate;
                 }
         );
-
         return candidates;
-    }*/
+    }
 
     private List<Language> getLanguages(int candidateId) {
         List<Language> languages = jdbcTemplate.query("select * from language where candidate_id = ?", new Object[]{candidateId}, (row, count) -> {
@@ -89,7 +72,7 @@ public class CandidateController {
 
     }
 
-    private List<Education> getEducations(int candidateId){
+    private List<Education> getEducations(int candidateId) {
         List<Education> educations = jdbcTemplate.query("select * from education where candidate_id = ?", new Object[]{candidateId}, (row, count) -> {
                     String candidateEducationLevel = row.getString("education_level");
                     String candidateSchoolName = row.getString("school_name");
@@ -111,7 +94,7 @@ public class CandidateController {
         return educations;
     }
 
-    private List<JobExperience> getJobExperiences(int candidateId){
+    private List<JobExperience> getJobExperiences(int candidateId) {
         List<JobExperience> jobExperiences = jdbcTemplate.query("select * from job_experience where candidate_id = ?", new Object[]{candidateId}, (row, count) -> {
                     String candidateCompanyName = row.getString("company_name");
                     String candidatePosition = row.getString("position");
@@ -122,10 +105,10 @@ public class CandidateController {
 
                     JobExperience jobExperience = new JobExperience();
                     jobExperience.setCompany_name(candidateCompanyName);
-            jobExperience.setPosition(candidatePosition);
-            jobExperience.setJob_duties(candidateJobDuties);
-            jobExperience.setJob_begin(candidateJobBegin);
-            jobExperience.setJob_end(candidateJobEnd);
+                    jobExperience.setPosition(candidatePosition);
+                    jobExperience.setJob_duties(candidateJobDuties);
+                    jobExperience.setJob_begin(candidateJobBegin);
+                    jobExperience.setJob_end(candidateJobEnd);
 
                     return jobExperience;
                 }
@@ -140,16 +123,16 @@ public class CandidateController {
                 candidate.getEmail(), candidate.getPhone(), candidate.getAddress(), candidate.getLinkedin(), candidate.getPicture(), candidate.getJob_title());
         int id = jdbcTemplate.queryForObject("select max(id) from candidate", Integer.class);
 
-        for(Language language : candidate.getLanguages()) {
+        for (Language language : candidate.getLanguages()) {
             jdbcTemplate.update("insert into language(language_name, language_level, candidate_id) values(?, ?, ?)",
                     language.getLanguageName(), language.getLanguageLevel(), id);
         }
-        for(Education education : candidate.getEducations()){
+        for (Education education : candidate.getEducations()) {
             jdbcTemplate.update("insert into education(education_level, school_name, subject, study_begin, study_end, candidate_id) values (?, ?, ?, ?, ?, ?)",
-            education.getEducation_level(), education.getSchool_name(), education.getSubject(), education.getStudy_begin(), education.getStudy_end(), id);
+                    education.getEducation_level(), education.getSchool_name(), education.getSubject(), education.getStudy_begin(), education.getStudy_end(), id);
         }
 
-        for(JobExperience experience : candidate.getJobExperiences()){
+        for (JobExperience experience : candidate.getJobExperiences()) {
             jdbcTemplate.update("insert into job_experience(company_name, position, job_duties, job_begin, job_end, candidate_id) values (?, ?, ?, ?, ?, ?)",
                     experience.getCompany_name(), experience.getPosition(), experience.getJob_duties(), experience.getJob_begin(), experience.getJob_end(), id);
         }
