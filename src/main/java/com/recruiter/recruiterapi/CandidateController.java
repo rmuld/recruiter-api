@@ -21,7 +21,7 @@ public class CandidateController {
                     String candidateLastName = row.getString("lastname");
                     String candidatePersonalId = row.getString("personalid");
                     String candidateEmail = row.getString("email");
-                    int candidatePhone = row.getInt("phone");
+                    String candidatePhone = row.getString("phone");
                     String candidateAddress = row.getString("address");
                     String candidateLinkedIn = row.getString("linkedin");
                     String candidateComment = row.getString("comment");

@@ -9,7 +9,7 @@ public class Candidate {
     private String lastname;
     private String personalid;
     private String email;
-    private int phone;
+    private String phone;
     private String address;
     private String linkedin;
     private String comment;
@@ -37,8 +37,8 @@ public class Candidate {
     public String getEmail() {return email;}
     public void setEmail(String email) {this.email = email;}
 
-    public int getPhone() {return phone;}
-    public void setPhone(int phone) {this.phone = phone;}
+    public String getPhone() {return phone;}
+    public void setPhone(String phone) {this.phone = phone;}
 
     public String getAddress() {return address;}
     public void setAddress(String address) {this.address = address;}
