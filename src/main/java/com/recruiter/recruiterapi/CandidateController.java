@@ -40,7 +40,7 @@ public class CandidateController {
                     if (candidateLinkedIn != null){
                         String linkedInUrl = candidateLinkedIn;
                         if (!candidateLinkedIn.startsWith("http://") && !candidateLinkedIn.startsWith("https://")) {
-                            linkedInUrl += "http://" + linkedInUrl;
+                            linkedInUrl = "http://" + linkedInUrl;
                         }
                         candidate.setLinkedin(linkedInUrl);
                     }
