@@ -37,7 +37,7 @@ public class CandidateController {
                     candidate.setPhone(candidatePhone);
                     candidate.setAddress(candidateAddress);
 
-                    if (candidateLinkedIn != null){
+                    if (candidateLinkedIn != null && !candidateLinkedIn.equals("")){
                         String linkedInUrl = candidateLinkedIn;
                         if (!candidateLinkedIn.startsWith("http://") && !candidateLinkedIn.startsWith("https://")) {
                             linkedInUrl = "http://" + linkedInUrl;
