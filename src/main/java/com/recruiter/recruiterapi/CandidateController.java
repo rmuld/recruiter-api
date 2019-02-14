@@ -36,7 +36,15 @@ public class CandidateController {
                     candidate.setEmail(candidateEmail);
                     candidate.setPhone(candidatePhone);
                     candidate.setAddress(candidateAddress);
-                    candidate.setLinkedin(candidateLinkedIn);
+
+                    if (candidateLinkedIn != null){
+                        String linkedInUrl = candidateLinkedIn;
+                        if (!candidateLinkedIn.startsWith("http://") && !candidateLinkedIn.startsWith("https://")) {
+                            linkedInUrl += "http://" + linkedInUrl;
+                        }
+                        candidate.setLinkedin(linkedInUrl);
+                    }
+
                     candidate.setComment(candidateComment);
                     candidate.setPicture(candidatePicture);
                     candidate.setJob_title(candidateJob_title);
