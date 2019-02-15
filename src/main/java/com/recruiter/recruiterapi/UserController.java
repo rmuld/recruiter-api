@@ -23,7 +23,7 @@ public class UserController {
     @PostMapping("/sign-up")
     public void signUp(@RequestBody User user) {
         String username = user.getUsername();
-        String password = passwordEncoder.encode(user.getPassword());
+        String password = passwordEncoder.encode(user.getPassword()); //siin kohas tehakse minu parool sigrimigriks, mis läheb andmebaasi
         userRepository.addUser(username, password);
     }
 }
